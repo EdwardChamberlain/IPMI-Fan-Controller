@@ -1,2 +1,3 @@
-# Flask-docker-test
-Test Repo
+# IPMI Fan Controller
+
+Simple WebGUI equipped fan controller.
