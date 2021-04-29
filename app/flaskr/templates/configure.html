@@ -26,11 +26,12 @@
     <br>
     <p>
         <h3>Start-Up Scripts</h3>
-        <p>
-            Start up scripts run when the container first launches and can be used to automatically set fan speeds at boot.
+        <p class="text-justify">
+            Start up scripts run when the container first launches and can be used to automatically set fan speeds at boot. You must enable the startup script. Manual mode must be enabled to allow fan control. You must pass IPMI credentials and host information through enviroment variables for startup scripts to work.
             {{ wtf.quick_form(startup_form, form_type='horizontal') }}
         </p>
     </p>
+    <br>
 
 
 {% endblock %}
