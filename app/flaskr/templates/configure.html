@@ -32,6 +32,15 @@
         </p>
     </p>
     <br>
+    <p>
+        <h3>Current Startup Paremeters</h3>
+        <p>
+            {% for k, v in startup_file.items() %}
+                {{ k }}: {{ v }}<br>
+            {% endfor %}
+        </p>
+    </p>
+    <br><br>
 
 
 {% endblock %}
