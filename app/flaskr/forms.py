@@ -19,6 +19,6 @@ class Configure_Form(FlaskForm):
 class StartUp_Form(FlaskForm):
     enable = BooleanField("Enable Startup Script")
     manual_mode = BooleanField("Enable Manual Mode")
-    fan_speed = StringField('Speed Percentage')
+    fan_speed = StringField('Fan Speed Percentage')
 
     submit_startup = SubmitField('Save')
