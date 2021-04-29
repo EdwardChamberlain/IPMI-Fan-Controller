@@ -3,10 +3,9 @@ from flaskr import app
 from flaskr import forms
 
 import logging
-import subprocess
-import os
 
 import config
+import ipmitools
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -24,7 +23,7 @@ def index():
 
         else:
             fan_speed = str(hex(int(control_form.speed.data)))
-            result = run_IPMI_command(f"ipmitool -I lanplus -H {config.IPMI_HOST} -U {config.IPMI_USER} -P {config.IPMI_PASS} raw 0x30 0x30 0x02 0xff {fan_speed}")
+            result = ipmitools.run_IPMI_command(f"ipmitool -I lanplus -H {config.IPMI_HOST} -U {config.IPMI_USER} -P {config.IPMI_PASS} raw 0x30 0x30 0x02 0xff {fan_speed}")
             flask.flash(result or f"Fans set to {control_form.speed.data}%")
 
     return flask.render_template(
@@ -55,20 +54,10 @@ def set_manual_mode():
         flask.flash("A required enviroment variable has not been set. Have you supplied your IPMI username, password, and host in the configure page?")
 
     else:
-        result = run_IPMI_command(f"ipmitool -I lanplus -H {config.IPMI_HOST} -U {config.IPMI_USER} -P {config.IPMI_PASS} raw 0x30 0x30 0x01 0x00")
+        result = ipmitools.run_IPMI_command(f"ipmitool -I lanplus -H {config.IPMI_HOST} -U {config.IPMI_USER} -P {config.IPMI_PASS} raw 0x30 0x30 0x01 0x00")
         flask.flash(result or "Manual Mode Set. Please monitor temps.")
 
         if not result:
             config.MANUAL_MODE = True
 
     return flask.redirect(flask.url_for('configure'))
-
-def run_IPMI_command(command):
-    pipe = subprocess.PIPE
-    result = subprocess.Popen(command, shell=True, stderr=pipe, stdout=pipe)
-    result = result.stderr.read().decode("utf-8").strip()
-
-    if 'Error' in result:
-        return result
-    else:
-        return None
