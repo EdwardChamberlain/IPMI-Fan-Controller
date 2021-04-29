@@ -7,6 +7,7 @@ IPMI_HOST = os.getenv('APP_IPMI_HOST') or None
 IPMI_USER = os.getenv('APP_IPMI_USER') or None
 IPMI_PASS = os.getenv('APP_IPMI_PASS') or None
 MANUAL_MODE = False
+STARTUP_PATH = '/data/startup.json' if not DEVELOP else 'data/startup.json'
 
 
 class Flask_Config:

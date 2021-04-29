@@ -11,18 +11,17 @@ template = {
 }
 
 try:
-    path = '/data/startup.json' if not config.DEVELOP else 'data/startup.json'
-    with open(path, 'r') as f:
+    with open(config.STARTUP_PATH, 'r') as f:
         startup_script = json.load(f)
 except:
     logging.error("Error opening startup script - Generating new script")
-    with open(path, 'w') as f:
+    with open(config.STARTUP_PATH, 'w') as f:
         json.dump(template, f)
     exit()
 
-if startup_script['ENABLE'] == 'True':
+if startup_script['ENABLE']:
 
-    if startup_script['MANUAL_MODE'] == 'True':
+    if startup_script['MANUAL_MODE']:
         logging.info("Setting Manual Mode")
         ipmitools.set_manual_mode()
 
