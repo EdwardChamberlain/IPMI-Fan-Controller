@@ -34,6 +34,9 @@ def index():
 
 @app.route('/configure', methods=['GET', 'POST'])
 def configure():
+    with open(config.STARTUP_PATH, 'r') as f:
+        startup_script = json.load(f)
+
     IPMI_form = forms.Configure_Form()
     startup_form = forms.StartUp_Form()
 
@@ -46,12 +49,14 @@ def configure():
 
     if startup_form.validate_on_submit() and startup_form.submit_startup.data:
         output = {
-            "ENABLE": startup_form.enable.data,
-            "MANUAL_MODE": startup_form.manual_mode.data,
-            "FAN_SPEED": startup_form.fan_speed.data
+            "ENABLE": startup_form.enable.data or startup_script['ENABLE'],
+            "MANUAL_MODE": startup_form.manual_mode.data or startup_script['MANUAL_MODE'],
+            "FAN_SPEED": startup_form.fan_speed.data or startup_script['FAN_SPEED'],
         }
 
-        if output['FAN_SPEED'] and not output['MANUAL_MODE']:
+        print(output)
+
+        if output['FAN_SPEED'] != '' and output['MANUAL_MODE'] == 'False':
             logging.error("Invalid Startup Script Submitted. Manual Mode must be enabled")
             flask.flash("Invalid Startup Script: Manual Mode must be enabled to control fan speeds.")
         else:
@@ -65,6 +70,7 @@ def configure():
         'configure.html',
         IPMI_form=IPMI_form,
         startup_form=startup_form,
+        startup_file=startup_script,
     )
 
 @app.route('/')
