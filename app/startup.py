@@ -1,6 +1,6 @@
 import json
-
 import logging
+
 import config
 import ipmitools
 
@@ -13,15 +13,15 @@ template = {
 try:
     with open(config.STARTUP_PATH, 'r') as f:
         startup_script = json.load(f)
-except:
+except FileNotFoundError:
     logging.error("Error opening startup script - Generating new script")
     with open(config.STARTUP_PATH, 'w') as f:
         json.dump(template, f)
     exit()
 
-if startup_script['ENABLE']:
+if startup_script['ENABLE'] == 'True':
 
-    if startup_script['MANUAL_MODE']:
+    if startup_script['MANUAL_MODE'] == 'True':
         logging.info("Setting Manual Mode")
         ipmitools.set_manual_mode()
 
