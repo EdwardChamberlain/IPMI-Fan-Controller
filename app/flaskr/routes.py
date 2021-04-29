@@ -34,17 +34,19 @@ def index():
 
 @app.route('/configure', methods=['GET', 'POST'])
 def configure():
-    configure_form = forms.Configure_Form()
+    IPMI_form = forms.Configure_Form()
+    startup_form = forms.StartUp_Form()
 
-    if configure_form.validate_on_submit():
-        config.IPMI_HOST = configure_form.host.data or config.IPMI_HOST
-        config.IPMI_USER = configure_form.user.data or config.IPMI_USER
-        config.IPMI_PASS = configure_form.passwd.data or config.IPMI_PASS
+    if IPMI_form.validate_on_submit():
+        config.IPMI_HOST = IPMI_form.host.data or config.IPMI_HOST
+        config.IPMI_USER = IPMI_form.user.data or config.IPMI_USER
+        config.IPMI_PASS = IPMI_form.passwd.data or config.IPMI_PASS
         flask.flash("Config Updated")
 
     return flask.render_template(
         'configure.html',
-        form=configure_form
+        IPMI_form=IPMI_form,
+        startup_form=startup_form,
     )
 
 @app.route('/')
