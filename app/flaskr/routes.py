@@ -51,13 +51,15 @@ def configure():
             "FAN_SPEED": startup_form.fan_speed.data
         }
 
-        with open(config.STARTUP_PATH, 'w') as f:
-            json.dump(output, f)
+        if output['FAN_SPEED'] and not output['MANUAL_MODE']:
+            logging.error("Invalid Startup Script Submitted. Manual Mode must be enabled")
+            flask.flash("Invalid Startup Script: Manual Mode must be enabled to control fan speeds.")
+        else:
+            with open(config.STARTUP_PATH, 'w') as f:
+                json.dump(output, f)
 
-        print(output)
-
-        logging.info("Startup Script Updated ")
-        flask.flash("Startup Script Updated.")
+            logging.info("Startup Script Updated ")
+            flask.flash("Startup Script Updated.")
 
     return flask.render_template(
         'configure.html',
