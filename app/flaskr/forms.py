@@ -12,3 +12,9 @@ class Configure_Form(FlaskForm):
     passwd = PasswordField("IPMI Password")
     
     submit = SubmitField('Apply')
+
+class StartUp_Form(FlaskForm):
+    manual_mode = BooleanField("Enable Manual Mode")
+    fan_speed = IntegerField('Speed Percentage', validators=[NumberRange(min=10, max=100, message="Value must be between 10% and 100%"), DataRequired()])
+
+    submit = SubmitField('Save')
