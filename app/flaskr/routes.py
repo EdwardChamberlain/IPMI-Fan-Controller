@@ -3,9 +3,11 @@ from flaskr import app
 from flaskr import forms
 
 import logging
+import json
 
 import config
 import ipmitools
+
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -35,11 +37,27 @@ def configure():
     IPMI_form = forms.Configure_Form()
     startup_form = forms.StartUp_Form()
 
-    if IPMI_form.validate_on_submit():
+    if IPMI_form.validate_on_submit() and IPMI_form.submit_configure.data:
         config.IPMI_HOST = IPMI_form.host.data or config.IPMI_HOST
         config.IPMI_USER = IPMI_form.user.data or config.IPMI_USER
         config.IPMI_PASS = IPMI_form.passwd.data or config.IPMI_PASS
-        flask.flash("Config Updated")
+        logging.info("Updated IPMI Settings")
+        flask.flash("Config Updated.")
+
+    if startup_form.validate_on_submit() and startup_form.submit_startup.data:
+        output = {
+            "ENABLE": startup_form.enable.data,
+            "MANUAL_MODE": startup_form.manual_mode.data,
+            "FAN_SPEED": startup_form.fan_speed.data
+        }
+
+        with open(config.STARTUP_PATH, 'w') as f:
+            json.dump(output, f)
+
+        print(output)
+
+        logging.info("Startup Script Updated ")
+        flask.flash("Startup Script Updated.")
 
     return flask.render_template(
         'configure.html',
