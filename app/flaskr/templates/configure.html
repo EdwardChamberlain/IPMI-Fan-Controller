@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h3>IPMI Settings</h3>
+    <p class="text-justify">
+        Configure your IPMI settings here. You username and password are the same as those you use to login to iDRAC. You must enable IPMI in your iDRAC settings.
+    </p>
+    {{ wtf.quick_form(form, form_type='horizontal') }}
+
+    <h3>Manual Fan Control</h3>
+    <p class="text-justify">
+        To enable this app to control your fans you must enable manual fan control mode. This will disable "auto" fan mode on your server and your fans will <b>no longer respond to temperature changes.</b> Please make sure that your fan settings are suitable for your machine and mointor temperatures accordingly.
+    </p>
+    <a href="{{ url_for('set_manual_mode') }}"><button type="button" class="btn btn-danger btn-block">Enable Manual Fan Control</button></a>
+{% endblock %}

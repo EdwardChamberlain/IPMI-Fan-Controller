@@ -1,0 +1,36 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block title %}
+    {% if title %}
+        {{ title }} - IPMI Controller
+    {% else %}
+        IPMI Controller
+    {% endif %}
+{% endblock %}
+
+{% block navbar %}
+    {% include '_navbar.html' %}
+{% endblock %}
+
+{% block head %}
+    {{super()}}
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-info" role="alert" style="margin-top: 20px;">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <br>
+
+        {# application content needs to be provided in the app_content block #}
+        {% block app_content %}
+        {% endblock %}
+    </div>
+{% endblock %}

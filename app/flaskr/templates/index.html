@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h3>
+        Fan Speed Control
+    </h3>
+    {{ wtf.quick_form(form, form_type='horizontal') }}
+
+{% endblock %}
