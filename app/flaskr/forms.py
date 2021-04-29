@@ -11,10 +11,11 @@ class Configure_Form(FlaskForm):
     user = StringField("IPMI Username")
     passwd = PasswordField("IPMI Password")
     
-    submit = SubmitField('Apply')
+    submit_configure = SubmitField('Apply')
 
 class StartUp_Form(FlaskForm):
+    enable = BooleanField("Enable Startup Script")
     manual_mode = BooleanField("Enable Manual Mode")
-    fan_speed = IntegerField('Speed Percentage', validators=[NumberRange(min=10, max=100, message="Value must be between 10% and 100%"), DataRequired()])
+    fan_speed = StringField('Speed Percentage')
 
-    submit = SubmitField('Save')
+    submit_startup = SubmitField('Save')
