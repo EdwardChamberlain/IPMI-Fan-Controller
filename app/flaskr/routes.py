@@ -54,8 +54,6 @@ def configure():
             "FAN_SPEED": startup_form.fan_speed.data or startup_script['FAN_SPEED'],
         }
 
-        print(output)
-
         if output['FAN_SPEED'] != '' and output['MANUAL_MODE'] == 'False':
             logging.error("Invalid Startup Script Submitted. Manual Mode must be enabled")
             flask.flash("Invalid Startup Script: Manual Mode must be enabled to control fan speeds.")
