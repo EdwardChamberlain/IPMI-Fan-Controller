@@ -27,6 +27,7 @@ def index():
 
     return flask.render_template(
         'index.html',
+        MANUAL_MODE=config.MANUAL_MODE,
         form=control_form
     )
 
@@ -45,7 +46,6 @@ def configure():
         form=configure_form
     )
 
-@app.route('/')
 @app.route('/set_manual_mode')
 def set_manual_mode():
     if None in [config.IPMI_HOST, config.IPMI_USER, config.IPMI_PASS]:
@@ -55,6 +55,22 @@ def set_manual_mode():
     else:
         result = ipmitools.set_manual_mode()
         flask.flash(result or "Manual Mode Set. Please monitor temps.")
+
+        if not result:
+            config.MANUAL_MODE = True
+
+    return flask.redirect(flask.url_for('configure'))
+
+
+@app.route('/set_auto_mode')
+def set_auto_mode():
+    if None in [config.IPMI_HOST, config.IPMI_USER, config.IPMI_PASS]:
+        logging.error("AUTOMATIC MODE NOT SET: A required enviroment variable has not been set.")
+        flask.flash("A required enviroment variable has not been set. Have you supplied your IPMI username, password, and host in the configure page?")
+
+    else:
+        result = ipmitools.set_auto_mode()
+        flask.flash(result or "Auto Mode Set. Fan control disabled.")
 
         if not result:
             config.MANUAL_MODE = True
