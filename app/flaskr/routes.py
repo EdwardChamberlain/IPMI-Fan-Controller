@@ -73,6 +73,6 @@ def set_auto_mode():
         flask.flash(result or "Auto Mode Set. Fan control disabled.")
 
         if not result:
-            config.MANUAL_MODE = True
+            config.MANUAL_MODE = False
 
     return flask.redirect(flask.url_for('configure'))
