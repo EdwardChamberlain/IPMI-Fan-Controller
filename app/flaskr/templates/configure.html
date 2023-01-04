@@ -13,5 +13,7 @@
     <p class="text-justify">
         To enable this app to control your fans you must enable manual fan control mode. This will disable "auto" fan mode on your server and your fans will <b>no longer respond to temperature changes.</b> Please make sure that your fan settings are suitable for your machine and monitor temperatures accordingly.
     </p>
+    <a href="{{ url_for('set_auto_mode') }}"><button type="button" class="btn btn-success btn-block">Enable Automatic Fan Control</button></a>
+    <br>
     <a href="{{ url_for('set_manual_mode') }}"><button type="button" class="btn btn-danger btn-block">Enable Manual Fan Control</button></a>
 {% endblock %}
