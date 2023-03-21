@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_bootstrap import Bootstrap
 
 
